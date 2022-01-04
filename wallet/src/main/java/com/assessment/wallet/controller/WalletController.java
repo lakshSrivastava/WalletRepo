@@ -71,9 +71,9 @@ public class WalletController {
     }
 
     @GetMapping("/account/user/{phoneNum}")
-    public String getUser(@PathVariable String phoneNum) {
+    public String getUser(@PathVariable String userId) {
         logger.trace("Entered getUser() method.....");
-        String response = walletService.getUser(phoneNum);
+        String response = walletService.getUser(userId);
         logger.trace("getUser() method execution completion....");
         return response;
     }
