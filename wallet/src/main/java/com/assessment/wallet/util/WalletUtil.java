@@ -10,25 +10,25 @@ public class WalletUtil {
         String phoneNum = account.getPhoneNum();
         String userName = account.getName();
         String userPassword = account.getUserPassword();
-        return validatePhoneNum(phoneNum) && validateUserName(userName)
-				&& validateUserPassword(userPassword);
+        return checkPhoneNum(phoneNum) && checkUserName(userName)
+				&& checkUserPassword(userPassword);
     }
 
-    public static boolean validatePhoneNum(String phoneNum) {
+    public static boolean checkPhoneNum(String phoneNum) {
         if (!phoneNum.matches(WalletConstants.PHONE_NUM_REGEX)) {
             throw new ValidationFailureException(WalletConstants.PHONE_NUM_INVALID);
         }
         return true;
     }
 
-    public static boolean validateUserName(String userName) {
+    public static boolean checkUserName(String userName) {
         if (null == userName || userName.isEmpty()) {
             throw new ValidationFailureException(WalletConstants.USER_NAME_INVALID);
         }
         return true;
     }
 
-    public static boolean validateUserPassword(String password) {
+    public static boolean checkUserPassword(String password) {
         if (null == password || password.isEmpty()) {
             throw new ValidationFailureException(WalletConstants.PASSWORD_BLANK);
         }
