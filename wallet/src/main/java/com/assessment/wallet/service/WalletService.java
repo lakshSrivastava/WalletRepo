@@ -12,9 +12,9 @@ public interface WalletService {
 	
 	String loginUser(Account account);
 	
-	boolean isExistingUser(String phoneNum);
+	boolean isExistingUser(String userId);
 	
-	String getUser(String phoneNum);
+	String getUser(String userId);
 	
 	String updateUser(Account account);
 	
