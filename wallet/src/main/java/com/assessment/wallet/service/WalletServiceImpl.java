@@ -74,9 +74,9 @@ public class WalletServiceImpl implements WalletService {
 	 *This method will check if user is existing or not
 	 */
 	@Override
-	public boolean isExistingUser(String phoneNum) {
+	public boolean isExistingUser(String userId) {
 		logger.trace("Entered isExistingUser() method");
-		if(accountDao.existsById(phoneNum)) {
+		if(accountDao.existsById(userId)) {
 			logger.trace("Existing User");
 			return true;
 		}
@@ -88,14 +88,14 @@ public class WalletServiceImpl implements WalletService {
 	 *This method will view a user details
 	 */
 	@Override
-	public String getUser(String phoneNum) {
+	public String getUser(String userId) {
 		logger.trace("Entered viewUser() method");
-		if(!isExistingUser(phoneNum)) {
+		if(!isExistingUser(userId)) {
 			logger.trace("User Not Found Exception Occured...");
 			throw new UserNotFoundException(WalletConstants.NON_EXISTING_USER);
 		}
 		logger.trace("viewUser() method execution completion....");
-		return accountDao.getById(phoneNum).toString();
+		return accountDao.getById(userId).toString();
 	}
 
 	/**
