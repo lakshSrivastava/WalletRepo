@@ -30,6 +30,9 @@ public class WalletServiceImpl implements WalletService {
 	 
 	@Autowired 
 	private WalletTransactionDao walletTransactionDao;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	 
 	/**
 	 *This method will add a non-existing user
@@ -42,11 +45,13 @@ public class WalletServiceImpl implements WalletService {
 			logger.trace("User already have an account");
 			throw new ValidationFailureException("You already have an account on Wallet");
 		}
+		account.setUserPassword(passwordEncoder.encode(account.getUserPassword()));	//encode password	
 		accountDao.save(account);
 		logger.trace("User Added Successfully");
 		logger.trace("addUser() method execution completion....");
 		return account.getName()+", Welcome To Wallet";
 	}
+	
 	
 	/**
 	 *This method will login a user
@@ -55,7 +60,7 @@ public class WalletServiceImpl implements WalletService {
 	public String loginUser(Account account) {
 		logger.trace("Entered loginUser() method");
 		String phoneNum = account.getPhoneNum();
-		String userPassword = account.getUserPassword();
+		String userPassword = passwordEncoder.encode(account.getUserPassword());
 		if(!isExistingUser(phoneNum)) {
 			logger.trace("User Not Found Exception Occured...");
 			throw new UserNotFoundException(WalletConstants.NON_EXISTING_USER);
@@ -111,7 +116,7 @@ public class WalletServiceImpl implements WalletService {
 		Account account = accountDao.getById(phoneNum);
 		//updating account with new values -- NOTE : dont update wallet balance here
 		account.name = updatedAccount.name ;
-		account.password = updatedAccount.password;
+		account.password = passwordEncoder.encode(updatedAccount.getUserPassword());
 		accountDao.save(account);
 		logger.trace("updateUser() method execution completion....");
 		return "Updated Successfully";
