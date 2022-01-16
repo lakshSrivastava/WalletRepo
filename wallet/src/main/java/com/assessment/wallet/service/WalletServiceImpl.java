@@ -21,7 +21,6 @@ import com.assessment.wallet.exception.UserNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class WalletServiceImpl implements WalletService {
 
 	Logger logger = LoggerFactory.getLogger(WalletServiceImpl.class);
@@ -102,13 +101,17 @@ public class WalletServiceImpl implements WalletService {
 	 *This method will update a user
 	 */
 	@Override
-	public String updateUser(Account account) {
+	public String updateUser(Account updatedAccount) {
 		logger.trace("Entered updateUser() method");
 		String phoneNum = account.getPhoneNum();
 		if(!isExistingUser(phoneNum)) {
 			logger.trace("User Not Found Exception Occured...");
 			throw new UserNotFoundException(WalletConstants.NON_EXISTING_USER);
 		}
+		Account account = accountDao.getById(phoneNum);
+		//updating account with new values -- NOTE : dont update wallet balance here
+		account.name = updatedAccount.name ;
+		account.password = updatedAccount.password;
 		accountDao.save(account);
 		logger.trace("updateUser() method execution completion....");
 		return "Updated Successfully";
@@ -118,6 +121,7 @@ public class WalletServiceImpl implements WalletService {
 	 *This method will add money to user's wallet
 	 */
 	@Override
+	@Transactional
 	public String addMoney(Account account, double amountToAdd) {
 		logger.trace("Entered addMoney() method");
 		String phoneNum = account.getPhoneNum();
