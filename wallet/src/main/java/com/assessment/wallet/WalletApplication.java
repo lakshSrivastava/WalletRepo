@@ -22,6 +22,11 @@ public class WalletApplication {
     public static void main(String[] args) {
         SpringApplication.run(WalletApplication.class, args);
     }
+    @Bean
+    public PasswordEncoder encoder() {
+         return new BCryptPasswordEncoder();
+    }
+
 }
 
 @EnableWebSecurity
